@@ -49,7 +49,7 @@ def test1():
 
 # implement this function
 def multiples_of_3_and_5(n):
-    pass
+    
 
 # (3 points)
 def test2():
