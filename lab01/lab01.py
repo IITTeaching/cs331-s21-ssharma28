@@ -83,7 +83,13 @@ def test2():
 #################################################################################
 def integer_right_triangles(p):
     a = []
-    b = [(x, y, z) for x in range(p+1) for y in range(x) for z in range(y) if x*x == y*y + z*z]
+    b = []
+    for x in range(p+1):
+      for y in range(x):
+        for z in range(y):
+          if (x*x == y*y + z*z):
+            b.append([x, y, z])
+            
     for(i, j, k) in b:
         if (i + j + k) == p:
             a.append((i, j, k))
