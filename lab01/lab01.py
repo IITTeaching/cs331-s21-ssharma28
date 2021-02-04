@@ -107,19 +107,23 @@ def test3():
 
 # implement this function
 def gen_pattern(chars):
+  
     first = ''
     second = ''
     total = ''
     num = ''
+
     for x in chars[::-1]:
       s = [first, x, second]
       if x == chars[len(chars) - 1]:
         num = x
       else:
         num = '.'.join(s)
-      first = num[:int(len(num) / 2) + 1]
+      pos = len(num) / 2
+      first = num[:int(pos) + 1]
       second = first[::-1]
-      num = num.center((len(chars) * 2 + len(chars) + 1), '.')
+      size = len(chars) * 2 + len(chars) 
+      num = num.center((size+1), '.')
       total += num + '\n'
     
     total = total.rstrip('\n')
