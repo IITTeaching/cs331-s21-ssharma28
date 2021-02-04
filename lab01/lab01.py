@@ -101,7 +101,28 @@ def test3():
 
 # implement this function
 def gen_pattern(chars):
-    pass
+    first = ''
+    second = ''
+    total = ''
+    num = ''
+    for x in chars[::-1]:
+      s = [first, x, second]
+      if x == chars[len(chars) - 1]:
+        num = x
+      else:
+        num = '.'.join(s)
+      first = num[:int(len(num) / 2) + 1]
+      second = first[::-1]
+      num = num.center((len(chars) * 2 + len(chars) + 1), '.')
+      total += num + '\n'
+    
+    total = total.rstrip('\n')
+    nums = total.split('\n')
+
+    for j in range((len(chars) - 2), -1, -1):
+      total = total + '\n' + nums[j].rstrip('\n') 
+ 
+    return total
 
 def test4():
     tc = unittest.TestCase()
