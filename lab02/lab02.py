@@ -109,23 +109,20 @@ def test1_2():
 ################################################################################
 # Implement this function
 def gen_passage(ngram_dict, length=100):
-
     passage = []
-    current = random.choice(sorted(ngram_dict.keys()))
-
     while len(passage) <= length:
+      current = random.choice(sorted(ngram_dict.keys()))
       passage.append(current)
       x = random.choice(ngram_dict[current])
-      for j in x:
-        passage.append(j)
-      current = passage[-1]
-      if current not in ngram_dict.keys():
-        current = random.choice(sorted(ngram_dict.keys()))
-      else:
-        current = passage[-1]
-
-    passage = passage[0:length]
-    return passage
+      passage.extend(x)
+      nextToken = x[-1]
+      while nextToken in ngram_dict and len(passage) <= length:
+        temp = random.choice(ngram_dict[nextToken])
+        passage.extend(temp)
+        nextToken = temp[:-1]
+    
+    passage = passage[:-1]
+    return " ".join(passage)
 
 # 50 Points
 def test2():
