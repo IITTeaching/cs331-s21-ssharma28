@@ -119,7 +119,7 @@ def gen_passage(ngram_dict, length=100):
       while nextToken in ngram_dict and len(passage) <= length:
         temp = random.choice(ngram_dict[nextToken])
         passage.extend(temp)
-        nextToken = temp[:-1]
+        nextToken = temp[-1]
     
     passage = passage[:-1]
     return " ".join(passage)
