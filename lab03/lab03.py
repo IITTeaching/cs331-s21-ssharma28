@@ -202,20 +202,36 @@ class SuffixArray():
         """
         Creates a suffix array for document (a string).
         """
-        pass
+        alist = []
+        for x in range(len(document)):
+          alist.append(x)
+        intcompare = lambda a,b: 0 if document[a:] == document[b:] else(-1 if document[a:] > document[b:] else 1)
+        mysort(alist, intcompare)
+        self.alist = alist
+        self.document = document
 
 
     def positions(self, searchstr: str):
         """
         Returns all the positions of searchstr in the documented indexed by the suffix array.
         """
-        pass
+        blist = []
+        stringcompare = lambda a,b: 0 if document[a:a +len(b)] == b else(1 if document[x:x + len(b)] > b else -1)
+        blist.append(mybinsearch(self.alist, searchstr, stringcompare))
+        return blist
 
     def contains(self, searchstr: str):
         """
         Returns true of searchstr is coontained in document.
         """
-        pass
+        str_compare = lambda a,b: 0 if self.document[a:] == b else(-1 if self.document[a:] < b else 1)
+        if mybinsearch(self.alist, searchstr, str) != -1:
+          return True
+        else:
+          for j in self.alist:
+            if searchstr in self.document[self.alist[j]:]:
+              return True
+        return False
 
 # 40 Points
 def test3():
