@@ -37,19 +37,17 @@ def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     exist in lst, then return -1.
     """
     first = 0
-    last = len(lst)-1
+    last = len(lst)
     found = False
 
-    while first<=last and not found:
+    while first<last:
       midpoint = (first + last) //2
-      if lst[midpoint] == elem:
-        found = True
-        return midpoint
+      if compare(lst[midpoint], elem) == -1:
+        first = midpoint+1
+      elif compare(lst[midpoint], elem) == 1:
+        last = midpoint 
       else:
-        if elem < lst[midpoint]:
-          last = midpoint-1
-        else:
-          first = midpoint+1
+        return midpoint
     return -1
 
 class Student():
@@ -135,7 +133,17 @@ class PrefixSearcher():
         Initializes a prefix searcher using a document and a maximum
         search string length k.
         """
-        pass
+        final = []
+        for i in range(len(document) - k):
+          temp = []
+          for f in range(k):
+            temp.append(document[i+f])
+          final.append(''.join(temp))
+        for i in range(0, k, -1):
+          final.append(document[len(document)-1-k:])
+        s = lambda a,b: 0 if a == b else (-1 if a < b else 1)
+        mysort(final, s)
+        self.final = final
 
     def search(self, q):
         """
@@ -144,7 +152,15 @@ class PrefixSearcher():
         length up to n). If q is longer than n, then raise an
         Exception.
         """
-        pass
+        s = lambda a,b:0 if a == b else(-1 if a < b else 1)
+        if mybinsearch(self.final, q, s) != -1:
+          return True
+        else: 
+          for j in self.final:
+            if q in j:
+              return True
+
+        return False
 
 # 30 Points
 def test2():
