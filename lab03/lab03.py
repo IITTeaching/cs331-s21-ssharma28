@@ -17,7 +17,16 @@ def mysort(lst: List[T], compare: Callable[[T, T], int]) -> List[T]:
     right element, 1 if the left is larger than the right, and 0 if the two
     elements are equal.
     """
-    pass
+    for x in range(1, len(lst)):
+      for i in range(x, 0, -1):
+        if compare(lst[i], lst[i-1]) == -1:
+          act = lst[i]
+          lst[i] = lst[i-1]
+          lst[i-1] = act
+        else:
+          break
+
+    return lst
 
 def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     """
@@ -27,7 +36,19 @@ def mybinsearch(lst: List[T], elem: S, compare: Callable[[T, S], int]) -> int:
     position of the first (leftmost) match for elem in lst. If elem does not
     exist in lst, then return -1.
     """
-    pass
+    first = 0
+    last = len(lst)
+    found = False
+
+    while first<last:
+      midpoint = (first + last) //2
+      if compare(lst[midpoint], elem) == -1:
+        first = midpoint+1
+      elif compare(lst[midpoint], elem) == 1:
+        last = midpoint 
+      else:
+        return midpoint
+    return -1
 
 class Student():
     """Custom class to test generic sorting and searching."""
@@ -112,7 +133,17 @@ class PrefixSearcher():
         Initializes a prefix searcher using a document and a maximum
         search string length k.
         """
-        pass
+        final = []
+        for i in range(len(document) - k):
+          temp = []
+          for f in range(k):
+            temp.append(document[i+f])
+          final.append(''.join(temp))
+        for i in range(0, k, -1):
+          final.append(document[len(document)-1-k:])
+        s = lambda a,b: 0 if a == b else (-1 if a < b else 1)
+        mysort(final, s)
+        self.final = final
 
     def search(self, q):
         """
@@ -121,7 +152,15 @@ class PrefixSearcher():
         length up to n). If q is longer than n, then raise an
         Exception.
         """
-        pass
+        s = lambda a,b:0 if a == b else(-1 if a < b else 1)
+        if mybinsearch(self.final, q, s) != -1:
+          return True
+        else: 
+          for j in self.final:
+            if q in j:
+              return True
+
+        return False
 
 # 30 Points
 def test2():
@@ -163,20 +202,36 @@ class SuffixArray():
         """
         Creates a suffix array for document (a string).
         """
-        pass
+        alist = []
+        for x in range(len(document)):
+          alist.append(x)
+        intcompare = lambda a,b: 0 if document[a:] == document[b:] else(-1 if document[a:] > document[b:] else 1)
+        mysort(alist, intcompare)
+        self.alist = alist
+        self.document = document
 
 
     def positions(self, searchstr: str):
         """
         Returns all the positions of searchstr in the documented indexed by the suffix array.
         """
-        pass
+        blist = []
+        stringcompare = lambda a,b: 0 if document[a:a +len(b)] == b else(1 if document[x:x + len(b)] > b else -1)
+        blist.append(mybinsearch(self.alist, searchstr, stringcompare))
+        return blist
 
     def contains(self, searchstr: str):
         """
         Returns true of searchstr is coontained in document.
         """
-        pass
+        str_compare = lambda a,b: 0 if self.document[a:] == b else(-1 if self.document[a:] < b else 1)
+        if mybinsearch(self.alist, searchstr, str) != -1:
+          return True
+        else:
+          for j in self.alist:
+            if searchstr in self.document[self.alist[j]:]:
+              return True
+        return False
 
 # 40 Points
 def test3():
